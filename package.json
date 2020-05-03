@@ -1,0 +1,63 @@
+{
+  "name": "z-alias",
+  "version": "0.1.0",
+  "description": "Edit your bash aliases the funny way",
+  "engines": {
+    "node": ">=10"
+  },
+  "bin": {
+    "z-alias": "./lib/cli.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "start": "node ./lib/cli.js",
+    "build": "babel src -d lib",
+    "dev": "babel -w src -d lib",
+    "clean": "rimraf lib",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/benavern/z-alias.git"
+  },
+  "keywords": [
+    "bash",
+    "alias",
+    "js"
+  ],
+  "author": "Benjamin Caradeuc <benjamin@caradeuc.info> (https://benjamin.caradeuc.info)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benavern/z-alias/issues"
+  },
+  "homepage": "https://github.com/benavern/z-alias#readme",
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "10"
+          }
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "inquirer": "^7.1.0",
+    "meow": "^6.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "rimraf": "^3.0.2"
+  }
+}
