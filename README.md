@@ -2,6 +2,8 @@
 
 > Edit your bash aliases the funny way
 
+[![npm](https://img.shields.io/npm/v/z-alias?style=for-the-badge)](https://www.npmjs.com/package/z-alias)
+
 ## About
 
 This project provides an easy solution for using **aliases** from your command line. `z-alias` solves the hassle of remembering how to create / edit / delete your aliases.
