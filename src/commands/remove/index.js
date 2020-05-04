@@ -17,9 +17,5 @@ export default async function(input) {
         }
     ])
 
-    if(aliasesToRemove.length) {
-        await removeFromFile(aliasesToRemove)
-    } else {
-        console.log('Nothing to delete, you\'ve changed your mind...')
-    }
+    await removeFromFile(aliasesToRemove)
 }

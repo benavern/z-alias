@@ -2,6 +2,11 @@ import path from 'path'
 import os from 'os'
 import fs from 'fs'
 import chalk from 'chalk'
+import { promisify } from 'util'
+
+const readFile = promisify(fs.readFile)
+const writeFile = promisify(fs.writeFile)
+const checkFile = promisify(fs.exists)
 
 export const aliasFile = process.env.Z_ALIAS_FILE || path.join(os.homedir(), '.bash_aliases')
 
@@ -32,24 +37,31 @@ export function strToAlias(str) {
 }
 
 /**
+ * Create a human readable alias string
+ * 
+ * @param {{aliasName: String, aliasCmd: String, aliasDesc: String}} alias 
+ * 
+ * @returns {String} - a printable version of the alias
+ */
+export function printableAlias(alias) {
+    return ` ${alias.aliasName} ${chalk.dim(`- ${chalk.cyan(alias.aliasDesc || '')} - ${chalk.italic.green(alias.aliasCmd)}`)}`
+}
+
+/**
  * Parse the files
  * 
- * @returns {Promise<{aliasName: String, aliasCmd: String, aliasDesc: String}[]>}
+ * @returns {{aliasName: String, aliasCmd: String, aliasDesc: String}[]}
  */
-export function parseAliasFile() {
-    return new Promise((resolve) => {
-        fs.readFile(aliasFile, (err, data) => {
-            if (err) resolve([])
+export async function parseAliasFile() {
+    await createFileIfNeeded()
 
-            // parse lines
-            const aliases = data.toString()
-                .split(/\r?\n/)
-                .filter(line => line.startsWith('alias'))
-                .map(strToAlias)
+    const data = await readFile(aliasFile)
 
-            resolve(aliases)
-        })
-    })
+    // parse lines
+    return data.toString()
+        .split(/\r?\n/)
+        .filter(line => line.startsWith('alias'))
+        .map(strToAlias)
 }
 
 /**
@@ -59,7 +71,12 @@ export function parseAliasFile() {
  * 
  * @returns {Promise}
  */
-export async function removeFromFile(aliasesToRemove) {
+export async function removeFromFile(aliasesToRemove = []) {
+    if (!aliasesToRemove.length) {
+        console.log(chalk.green('Nothing has been removed.'))
+        return
+    }
+
     const aliases = await parseAliasFile()
     const newAliases = aliases.filter(alias => !aliasesToRemove.includes(alias.aliasName))
 
@@ -103,23 +120,22 @@ export async function addToFile(newAlias) {
  * 
  * @param {{aliasName: String, aliasCmd: String, aliasDesc: String}[]} - the aliases to write
  */
-export function writeAliasFile(aliases) {
+export async function writeAliasFile(aliases) {
     const aliasesStr = aliases.map(alias => aliasToString(alias)).join('\n')
-    return new Promise((resolve) => {
-        fs.writeFile(aliasFile, aliasesStr, (err) => {
-            if(err) throw(err)
-            
-            // success, nothing more to do there...
-            resolve()
-        })
-    })
+
+    await writeFile(aliasFile, aliasesStr)
 }
 
 /**
- * @param {{aliasName: String, aliasCmd: String, aliasDesc: String}} alias 
+ * Create the file if it doesn't already exist
  * 
- * @returns {String} - a printable version of the alias
+ * @returns {void}
  */
-export function printableAlias(alias) {
-    return ` ${alias.aliasName} ${chalk.dim(`- ${chalk.cyan(alias.aliasDesc || '')} - ${chalk.italic.green(alias.aliasCmd)}`)}`
+export async function createFileIfNeeded() {
+    const exists = await checkFile(aliasFile)
+    
+    if (!exists) {
+        await writeFile(aliasFile, '')
+        console.log(chalk.green(`The file ${chalk.yellow(aliasFile)} has been created.`))
+    }
 }

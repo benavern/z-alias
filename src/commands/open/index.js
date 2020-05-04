@@ -1,6 +1,6 @@
 import { exec } from 'child_process'
 import chalk from 'chalk'
-import { aliasFile } from '../../utils/aliases'
+import { aliasFile, createFileIfNeeded } from '../../utils/aliases'
 
 export default async function() {
     let opener;
@@ -14,6 +14,9 @@ export default async function() {
         console.log(chalk.red(`Your platform "${process.platform}" is not supported, try to open manualy "${aliasFile}".`))
         return
     }
+
+    // Create the file if it does not exist
+    await createFileIfNeeded()
 
     // open the file
     exec(opener + ' "' + escape(aliasFile) + '"', (err) => {
