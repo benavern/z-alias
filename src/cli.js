@@ -21,7 +21,7 @@ const cli = meow(`
     Examples
       $ z-alias -l
       $ z-alias -o
-      $ z-alias -s [<searchTerm>, <searchTerm2>, ...]
+      $ z-alias -s [<searchTerm> <searchTerm2> ...]
       $ z-alias -a [<aliasName> "<aliasCommand>"]
       $ z-alias -e [<aliasName> "<aliasCommand>"]
       $ z-alias -r [<aliasName> <aliasName2> ...]
