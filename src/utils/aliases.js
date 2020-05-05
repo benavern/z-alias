@@ -73,7 +73,7 @@ export async function parseAliasFile() {
  */
 export async function removeFromFile(aliasesToRemove = []) {
     if (!aliasesToRemove.length) {
-        console.log(chalk.green('Nothing has been removed.'))
+        console.log(chalk.yellow('⚠️ Nothing has been removed.'))
         return
     }
 
@@ -81,7 +81,7 @@ export async function removeFromFile(aliasesToRemove = []) {
     const newAliases = aliases.filter(alias => !aliasesToRemove.includes(alias.aliasName))
 
     await writeAliasFile(newAliases)
-    console.log(chalk.green(`"${chalk.cyan(aliasesToRemove.join(', '))}" have been removed from ${chalk.yellow(aliasFile)}.`))
+    console.log(chalk.green(`✔️ The ${aliasesToRemove.length > 1 ? 'aliases' : 'alias'} ${aliasesToRemove.map(alias => chalk.black.bgCyan(alias)).join(', ')} ${aliasesToRemove.length > 1 ? 'have' : 'has'} been ${chalk.bold('removed')}.`))
 }
 
 /**
@@ -99,7 +99,7 @@ export async function replaceInFile(aliasToReplace) {
     })
 
     await writeAliasFile(newAliases)
-    console.log(chalk.green(`The alias "${chalk.cyan(aliasToReplace.aliasName)}" has been edited in ${chalk.yellow(aliasFile)}.`))
+    console.log(chalk.green(`✔️ The alias ${chalk.black.bgCyan(aliasToReplace.aliasName)} has been ${chalk.bold('edited')}.`))
 }
 
 /**
@@ -112,7 +112,7 @@ export async function addToFile(newAlias) {
     const newAliases = [...aliases, newAlias]
 
     await writeAliasFile(newAliases)
-    console.log(chalk.green(`New alias "${chalk.cyan(newAlias.aliasName)}" has been added to ${chalk.yellow(aliasFile)}.`))
+    console.log(chalk.green(`✔️ New alias ${chalk.black.bgCyan(newAlias.aliasName)} has been ${chalk.bold('added')}.`))
 }
 
 /**
@@ -136,6 +136,6 @@ export async function createFileIfNeeded() {
     
     if (!exists) {
         await writeFile(aliasFile, '')
-        console.log(chalk.green(`The file ${chalk.yellow(aliasFile)} has been created.`))
+        console.log(chalk.green(`👷️ The file ${chalk.black.bgWhite(aliasFile)} has been created.`))
     }
 }

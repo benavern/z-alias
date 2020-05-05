@@ -1,9 +1,15 @@
 import inquirer from 'inquirer'
+import chalk from 'chalk'
 import { aliasCmdGuard } from '../guards'
 import { replaceInFile, parseAliasFile, printableAlias } from '../../utils/aliases'
 
 export default async function(input) {
     const aliases = await parseAliasFile()
+
+    if (!aliases.length) {
+        console.log(chalk.yellow(`🤷️ No aliases here, try to create one with ${chalk.black.bgWhite(' z-alias -a ')}.`))
+        return
+    }
 
     const editedAlias = await inquirer.prompt([
         {
