@@ -27,7 +27,7 @@ export function aliasToString(alias) {
 export function strToAlias(str) {
     // @Todo: Better parse strategy...
     const [makealias, aliasDesc = ''] = str.split('#')
-    const [aliasName, aliasCmd] = makealias.split('=')
+    const [aliasName, aliasCmd] = makealias.split(/=(.+)/) // split by first occurence only
 
     return {
         aliasName: aliasName.replace('alias', '').trim(), 
