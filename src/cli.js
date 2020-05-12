@@ -2,14 +2,17 @@
 import meow from 'meow'
 import commands from './commands'
 import execCli from './utils/cli'
- 
-const cli = meow(`
-    Usage
-      $ z-alias
- 
-    Options
+import { aliasFile } from './utils/aliases'
+
+const shortAliasFilePath = aliasFile.replace(process.env.HOME, '~')
+
+const cli = meow(`                            
+    Usage:
+      $ z-alias [options] [arguments]
+
+      Options:
       --list, -l    List all aliases
-      --open, -o    Open aliases file in editor
+      --open, -o    Open aliases file in your favorite editor
       --search, -s  Search in aliases
       --add, -a     Add an alias
       --edit, -e    Edit an alias
@@ -17,14 +20,25 @@ const cli = meow(`
 
       --help, -h    Display help
       --version, -v Print z-alias version
- 
-    Examples
+
+    Examples:
       $ z-alias -l
       $ z-alias -o
       $ z-alias -s [<searchTerm> <searchTerm2> ...]
       $ z-alias -a [<aliasName> "<aliasCommand>"]
       $ z-alias -e [<aliasName> "<aliasCommand>"]
       $ z-alias -r [<aliasName> <aliasName2> ...]
+
+    Configuration:  
+      * To change the path of the aliases file, paste and adapt this line
+        at the end of your .bashrc file.
+
+        export Z_ALIAS_FILE=${shortAliasFilePath}
+      
+      * To make your aliases available in all new shells paste this line
+        at the end of your .bashrc file (adapt if above line has been added).
+
+        if [ -f ${shortAliasFilePath} ]; then source ${shortAliasFilePath}; fi
 `, {
     flags: {
       list: { type: 'boolean', alias: 'l' },

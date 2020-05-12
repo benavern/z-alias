@@ -21,12 +21,12 @@ z-alias -h
 ```
 
 ```
-  Usage
-    $ z-alias
- 
-  Options
+  Usage:
+    $ z-alias [options] [arguments]
+
+    Options:
     --list, -l    List all aliases
-    --open, -o    Open aliases file in editor
+    --open, -o    Open aliases file in your favorite editor
     --search, -s  Search in aliases
     --add, -a     Add an alias
     --edit, -e    Edit an alias
@@ -34,14 +34,25 @@ z-alias -h
 
     --help, -h    Display help
     --version, -v Print z-alias version
- 
-  Examples
+
+  Examples:
     $ z-alias -l
     $ z-alias -o
     $ z-alias -s [<searchTerm> <searchTerm2> ...]
     $ z-alias -a [<aliasName> "<aliasCommand>"]
     $ z-alias -e [<aliasName> "<aliasCommand>"]
     $ z-alias -r [<aliasName> <aliasName2> ...]
+
+  Configuration:  
+    * To change the path of the aliases file, paste and adapt this line
+      at the end of your .bashrc file.
+
+      export Z_ALIAS_FILE=~/.bash_aliases
+  
+    * To make your aliases available in all new shells paste this line
+      at the end of your .bashrc file (adapt if above line has been added).
+
+      if [ -f ~/.bash_aliases ]; then source ~/.bash_aliases; fi
 ```
 
 ## Config
@@ -58,11 +69,11 @@ If not set, defaults to : `~/.bash_aliases`
 export Z_ALIAS_FILE="/path/to/aliases"
 ```
 
-### Add support to alternative shells (Zsh, ...)
+### Make your aliases available on all shells
+
+Add that block at the end or your `.bashrc` or `.zshrc` file.
 
 ```
-# Add aliases to shell
-if [ -f ~/.bash_aliases ]; then
-    source ~/.bash_aliases
-fi;
+# Make aliases available
+if [ -f ~/.bash_aliases ]; then source ~/.bash_aliases; fi
 ```
